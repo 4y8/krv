@@ -11,9 +11,9 @@ typedef struct env {
 } Environment;
 
 static Term mkterm(char *);
-static Closure mkclosure(Term, Environment);
+static Closure mkclosure(Term, Environment *);
 static Environment mkenv(void);
 static void push(Closure, Environment *);
-static void pop(Environment *);
-static void eval(Term, Environment);
-static void app(Term, Term, Environment);
+static Closure pop(Environment *);
+static void eval(Term, Environment *);
+static void app(Term, Term, Environment *);
