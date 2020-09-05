@@ -13,7 +13,14 @@ typedef struct env {
 static Term mkterm(char *);
 static Closure mkclosure(Term, Environment *);
 static Environment mkenv(void);
+
 static void push(Closure, Environment *);
 static Closure pop(Environment *);
+
 static void eval(Term, Environment *);
 static void app(Term, Term, Environment *);
+static void abs(Term, Environment *);
+static void zero(Environment *);
+static void succ(int, Environment *);
+
+static int run_main(char *);

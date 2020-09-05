@@ -33,17 +33,24 @@ app(Term l, Term r, Environment *e)
 }
 
 static void
-zero(Environment *e)
-{
-	Closure c;
-
-	c = pop(env);
-	eval(c.t, c.e);
-}
-
-static void
 abs(Term t, Environment *e)
 {
 	push(pop(stack), e);
 	eval(t, e);
+}
+
+static void
+zero(Environment *e)
+{
+	Closure c;
+
+	c = pop(e);
+	eval(c.t, c.e);
+}
+
+static void
+succ(int n, Environment *e)
+{
+	for (; n > 0; --n) (void)pop(e);
+	zero(e);
 }
