@@ -23,4 +23,4 @@ static void abs(Term, Environment *);
 static void zero(Environment *);
 static void succ(int, Environment *);
 
-static int run_main(char *);
+static void run_main(char *);
