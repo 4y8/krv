@@ -26,16 +26,15 @@ print_expr(FILE *in)
 		printf("%hd", i);
 		return 1;
 	}
-
 	case EOF:
 		return 0;
-	default: 
+	default:
 		fprintf(stderr, "error: unknown instruction\n");
 		exit(1);
 	}
 }
 
-static void
+void
 dis_main(char *file)
 {
 	FILE *in;
@@ -45,6 +44,6 @@ dis_main(char *file)
 		fprintf(stderr, "error: couldn't open %s\n", file);
 		exit(1);
 	}
-	for ( ; print_expr(in); ) {
-	}
+	for ( ; print_expr(in); );
+	(void)fclose(in);
 }

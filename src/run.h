@@ -1,3 +1,6 @@
+#ifndef __RUN_H__
+#define __RUN_H__
+
 typedef char *Term;
 
 typedef struct clo {
@@ -19,8 +22,10 @@ static Closure pop(Environment *);
 
 static void eval(Term, Environment *);
 static void app(Term, Term, Environment *);
-static void abs(Term, Environment *);
+static void lam(Term, Environment *);
 static void zero(Environment *);
 static void succ(int, Environment *);
 
-static void run_main(char *);
+void run_main(char *);
+
+#endif /* run.h */

@@ -12,6 +12,15 @@
 Environment *stack;
 Environment *env;
 
+static Closure
+mkclosure(Term t, Environment *e)
+{
+	return (Closure){
+		.t = t,
+		.e = e
+	};
+}
+
 static void
 push(Closure c, Environment *stack)
 {
@@ -33,7 +42,7 @@ app(Term l, Term r, Environment *e)
 }
 
 static void
-abs(Term t, Environment *e)
+lam(Term t, Environment *e)
 {
 	push(pop(stack), e);
 	eval(t, e);
@@ -53,4 +62,10 @@ succ(int n, Environment *e)
 {
 	for (; n > 0; --n) (void)pop(e);
 	zero(e);
+}
+
+static void
+eval(Term t, Environment *e)
+{
+	
 }
