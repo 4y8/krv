@@ -3,7 +3,10 @@
 
 #include <stdio.h>
 
-typedef char *Term;
+typedef struct {
+	char *t;
+	int len;
+} Term;
 
 typedef struct clo {
 	Term        t;
@@ -15,9 +18,8 @@ typedef struct env {
 	Closure *c;
 } Environment;
 
-static Term get_termf(FILE *, Term);
-static Term get_termt(Term, Term);
-static int term_len(Term);
+static Term get_termf(FILE *, char *);
+static Term get_termt(Term);
 
 static Term mkterm(char *);
 static Closure mkclosure(Term, Environment *);

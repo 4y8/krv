@@ -16,10 +16,40 @@
 Environment *stack;
 Environment *env;
 
-static Term
-get_termf(FILE *f, Term t)
+static Term 
+get_termf(FILE *f, char *buf)
 {
-	
+	char c;
+	int len;
+
+	c = read_bit(f);
+	buf[0] = c;
+	if (c == 0) {
+		if (c == 0) {
+			Term body;
+			buf[1] = c;
+			len = 2;
+			body = get_termf(f, buf + len);
+			len += body.len;
+		} else if (c == 1) {
+			Term l, r;
+			buf[1] = c;
+			len = 2;
+			l = get_termf(f, buf + len);
+			len += l.len;
+			r = get_termf(f, buf + len);
+		} else {
+			fprintf(stderr, "unknown instruction");
+			exit(1);
+		}
+	} else {
+		fprintf(stderr, "unknown instruction");
+		exit(1);
+	}
+	return (Term){
+		.t = buf,
+		.len = len
+	};
 }
 
 static Closure
@@ -78,4 +108,11 @@ static void
 eval(Term t, Environment *e)
 {
 	
+}
+
+void
+run_main(char *file)
+{
+	Term t;
+	Environment *e;
 }
