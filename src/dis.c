@@ -1,13 +1,14 @@
 #include "dis.h"
 
-static int 
+static int
 print_expr(FILE *in)
 {
 	int c;
 
 	c = fgetc(in);
-	switch (c) {
-	case 0:
+	switch (c & 0b10000000) {
+	case 1:
+		
 		printf("λ ");
 		return print_expr(in);
 	case 0b01000000:

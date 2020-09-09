@@ -3,10 +3,10 @@
 #define MAX_STACK_SIZE    1000
 
 /*
- * Instructions:
- * 00000000 x:   lambda x
- * 01000000 x y: (x y)
- * 10000000 x:   De Bruijn index x (on 2 bytes).
+ * Instructions (by John Tromp):
+ * 00 x:   lambda x
+ * 01 x y: (x y)
+ * 1^(n + 1) 0 : De Bruijn index n
  */
 
 Environment *stack;
