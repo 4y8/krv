@@ -1,4 +1,8 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "run.h"
+#include "common.h"
 
 #define MAX_STACK_SIZE    1000
 
@@ -11,6 +15,12 @@
 
 Environment *stack;
 Environment *env;
+
+static Term
+get_termf(FILE *f, Term t)
+{
+	
+}
 
 static Closure
 mkclosure(Term t, Environment *e)

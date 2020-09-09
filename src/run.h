@@ -1,6 +1,8 @@
 #ifndef __RUN_H__
 #define __RUN_H__
 
+#include <stdio.h>
+
 typedef char *Term;
 
 typedef struct clo {
@@ -12,6 +14,10 @@ typedef struct env {
 	int      top;
 	Closure *c;
 } Environment;
+
+static Term get_termf(FILE *, Term);
+static Term get_termt(Term, Term);
+static int term_len(Term);
 
 static Term mkterm(char *);
 static Closure mkclosure(Term, Environment *);

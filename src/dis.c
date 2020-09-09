@@ -4,7 +4,7 @@
 static int
 print_expr(FILE *in)
 {
-	int c;
+	char c;
 
 	c = read_bit(in);
 	if (c == 0) {
@@ -40,6 +40,7 @@ print_expr(FILE *in)
 		printf("%d", i);
 		return 1;
 	} else {
+		/* Otherwise it's an EOF. */
 		return 0;
 	}
 }
@@ -54,6 +55,7 @@ dis_main(char *file)
 		fprintf(stderr, "error: couldn't open %s\n", file);
 		exit(1);
 	}
-	for ( ; print_expr(in); );
+	(void)print_expr(in);
+	printf("\n");
 	(void)fclose(in);
 }

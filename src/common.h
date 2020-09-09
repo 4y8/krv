@@ -3,6 +3,6 @@
 
 #include <stdio.h>
 
-int read_bit(FILE *);
+char read_bit(FILE *);
 
 #endif /* common.h */

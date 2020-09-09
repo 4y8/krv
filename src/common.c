@@ -3,7 +3,7 @@
 static int bit_pos = -1;
 static int current_byte;
 
-int
+char
 read_bit(FILE *in)
 {
 	if (bit_pos >= 0) {
