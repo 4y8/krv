@@ -21,7 +21,7 @@ print_expr(FILE *in)
 				exit(1);
 			}
 			printf(" ");
-			int r =	print_expr(in);
+			int r = print_expr(in);
 			printf(")");
 			return r;
 		} else {
@@ -39,10 +39,9 @@ print_expr(FILE *in)
 		}
 		printf("%d", i);
 		return 1;
-	} else {
+	} else
 		/* Otherwise it's an EOF. */
 		return 0;
-	}
 }
 
 void

@@ -10,45 +10,51 @@
  * Instructions (by John Tromp):
  * 00 x:   lambda x
  * 01 x y: (x y)
- * 1^(n + 1) 0 : De Bruijn index n
+ * 1*(n + 1) 0 : De Bruijn index n
  */
 
 Environment *stack;
 Environment *env;
 
-static Term 
+static Term
 get_termf(FILE *f, char *buf)
 {
 	char c;
-	int len;
+	int  len;
 
-	c = read_bit(f);
+	c      = read_bit(f);
 	buf[0] = c;
 	if (c == 0) {
 		if (c == 0) {
 			Term body;
 			buf[1] = c;
-			len = 2;
-			body = get_termf(f, buf + len);
-			len += body.len;
+			len    = 2;
+			body   = get_termf(f, buf + len);
+			len   += body.len;
 		} else if (c == 1) {
 			Term l, r;
 			buf[1] = c;
-			len = 2;
-			l = get_termf(f, buf + len);
-			len += l.len;
-			r = get_termf(f, buf + len);
+			len    = 2;
+			l      = get_termf(f, buf + len);
+			len   += l.len;
+			r      = get_termf(f, buf + len);
 		} else {
 			fprintf(stderr, "unknown instruction");
 			exit(1);
+		}
+	} else if (c == 1) {
+		buf[1] = c;
+		len = 1;
+		while ((c = read_bit(f))) {
+			buf[len] = c;
 		}
 	} else {
 		fprintf(stderr, "unknown instruction");
 		exit(1);
 	}
 	return (Term){
-		.t = buf,
-		.len = len
+		       .t   = buf,
+		       .len = len
 	};
 }
 
@@ -56,8 +62,8 @@ static Closure
 mkclosure(Term t, Environment *e)
 {
 	return (Closure){
-		.t = t,
-		.e = e
+		       .t = t,
+		       .e = e
 	};
 }
 
@@ -70,7 +76,6 @@ push(Closure c, Environment *stack)
 static Closure
 pop(Environment *stack)
 {
-	
 	return stack->c[--stack->top];
 }
 
@@ -107,12 +112,11 @@ succ(int n, Environment *e)
 static void
 eval(Term t, Environment *e)
 {
-	
 }
 
 void
 run_main(char *file)
 {
-	Term t;
+	Term         t;
 	Environment *e;
 }

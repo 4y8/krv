@@ -5,7 +5,7 @@
 
 typedef struct {
 	char *t;
-	int len;
+	int   len;
 } Term;
 
 typedef struct clo {
