@@ -13,8 +13,17 @@
  * 1*(n + 1) 0 : De Bruijn index n
  */
 
-Environment *stack;
-Environment *env;
+Closure stack_clo[MAX_STACK_SIZE];
+Closure env_clo[MAX_STACK_SIZE];
+
+Environment stack = {
+	.top =             0,
+	.c   = &stack_clo[0],
+};
+Environment env = {
+	.top =           0,
+	.c   = &env_clo[0],
+};
 
 static Term
 get_termt(char *t)
@@ -40,22 +49,23 @@ get_termt(char *t)
 			fprintf(stderr, "unknown instruction");
 			exit(1);
 		}
-	} else if (c == 1) {
+	} else if (c == 1)
 		while ((c = t[len++]) == 1);
-	} else {
+	else {
 		fprintf(stderr, "unknown instruction");
 		exit(1);
 	}
 	return (Term){
 		       .t   = t,
-		       .len = len
+		       .len = len,
+		       .pos = 0
 	};
 }
 
 static Term
 get_termf(FILE *f, char *buf)
 {
-	int  len;
+	int len;
 
 	len = 0;
 	while ((buf[len++] = read_bit(f)) != -1);
@@ -86,45 +96,55 @@ pop(Environment *stack)
 static void
 app(Term l, Term r, Environment *e)
 {
-	push(mkclosure(r, e), stack);
+	push(mkclosure(r, e), &stack);
 	eval(l, e);
 }
 
 static void
 lam(Term t, Environment *e)
 {
-	push(pop(stack), e);
+	push(pop(&stack), e);
 	eval(t, e);
 }
 
 static void
-zero(Environment *e)
+deb(int n, Environment *e)
 {
 	Closure c;
 
+	for (; n > 0; --n) (void)pop(e);
 	c = pop(e);
 	eval(c.t, c.e);
 }
 
 static void
-succ(int n, Environment *e)
-{
-	for (; n > 0; --n) (void)pop(e);
-	zero(e);
-}
-
-static void
 eval(Term t, Environment *e)
 {
+	if (t.t[t.pos] == 0) {
+		if (t.t[t.pos + 1] == 0) {
+			t.pos += 2;
+			lam(t, e);
+		}
+		else {
+			Term l, r;
+			l = get_termt(t.t + t.pos + 2);
+			r = get_termt(t.t + t.pos + l.len + 2);
+			app(l, r, e);
+		}
+	} else {
+		int n;
+		n = 0;
+		while (t.t[t.pos + (n++)]);
+		deb(n, e);
+	}
 }
 
 void
 run_main(char *file)
 {
-	Term         t;
-	Environment *e;
-	char         c[1024];
-	FILE *       in;
+	Term  t;
+	char  c[1024];
+	FILE *in;
 
 	in = fopen(file, "rb");
 	if (!in) {
@@ -132,8 +152,8 @@ run_main(char *file)
 		exit(1);
 	}
 	t = get_termf(in, &c[0]);
-	t = get_termt(t.t);
 	for (int i = 0; i < t.len; ++i)
 		printf("%d\n", t.t[i]);
+	eval(t, &env);
 	fclose(in);
 }

@@ -6,6 +6,7 @@
 typedef struct {
 	char *t;
 	int   len;
+	int pos;
 } Term;
 
 typedef struct clo {
@@ -31,8 +32,7 @@ static Closure pop(Environment *);
 static void eval(Term, Environment *);
 static void app(Term, Term, Environment *);
 static void lam(Term, Environment *);
-static void zero(Environment *);
-static void succ(int, Environment *);
+static void deb(int, Environment *);
 
 void run_main(char *);
 
