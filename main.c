@@ -1,7 +1,7 @@
-#include "src/dis.h"
+#include "src/common.h"
 
 int
 main(int argc, char **argv)
 {
-	dis_main(argv[2]);
+	run_main(argv[2]);
 }

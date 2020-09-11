@@ -22,32 +22,31 @@ get_termf(FILE *f, char *buf)
 	char c;
 	int  len;
 
-	c      = read_bit(f);
-	buf[0] = c;
+	c          = read_bit(f);
+	len        = 0;
+	buf[len++] = c;
 	if (c == 0) {
+		c = read_bit(f);
 		if (c == 0) {
+			buf[len++] = c;
 			Term body;
-			buf[1] = c;
-			len    = 2;
-			body   = get_termf(f, buf + len);
-			len   += body.len;
+			body = get_termf(f, buf + len);
+			len += body.len;
 		} else if (c == 1) {
 			Term l, r;
-			buf[1] = c;
-			len    = 2;
-			l      = get_termf(f, buf + len);
-			len   += l.len;
-			r      = get_termf(f, buf + len);
+			buf[len++] = c;
+			l          = get_termf(f, buf + len);
+			len       += l.len;
+			r          = get_termf(f, buf + len);
+			len       += r.len;
 		} else {
 			fprintf(stderr, "unknown instruction");
 			exit(1);
 		}
 	} else if (c == 1) {
-		buf[1] = c;
-		len = 1;
-		while ((c = read_bit(f))) {
-			buf[len] = c;
-		}
+		while ((c = read_bit(f)))
+			buf[len++] = c;
+		buf[len++] = c;
 	} else {
 		fprintf(stderr, "unknown instruction");
 		exit(1);
@@ -119,4 +118,16 @@ run_main(char *file)
 {
 	Term         t;
 	Environment *e;
+	char         c[1024];
+	FILE *       in;
+
+	in = fopen(file, "rb");
+	if (!in) {
+		printf("error: can't open file %s", file);
+		exit(1);
+	}
+	t = get_termf(in, &c[0]);
+	for (int i = 0; i < t.len; ++i)
+		printf("%d\n", t.t[i]);
+	fclose(in);
 }
