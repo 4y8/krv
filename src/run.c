@@ -17,44 +17,49 @@ Environment *stack;
 Environment *env;
 
 static Term
-get_termf(FILE *f, char *buf)
+get_termt(char *t)
 {
 	char c;
 	int  len;
 
-	c          = read_bit(f);
-	len        = 0;
-	buf[len++] = c;
+	len = 0;
+	c   = t[len++];
 	if (c == 0) {
-		c = read_bit(f);
+		c = t[len++];
 		if (c == 0) {
-			buf[len++] = c;
 			Term body;
-			body = get_termf(f, buf + len);
+			body = get_termt(t + len);
 			len += body.len;
 		} else if (c == 1) {
 			Term l, r;
-			buf[len++] = c;
-			l          = get_termf(f, buf + len);
-			len       += l.len;
-			r          = get_termf(f, buf + len);
-			len       += r.len;
+			l    = get_termt(t + len);
+			len += l.len;
+			r    = get_termt(t + len);
+			len += r.len;
 		} else {
 			fprintf(stderr, "unknown instruction");
 			exit(1);
 		}
 	} else if (c == 1) {
-		while ((c = read_bit(f)))
-			buf[len++] = c;
-		buf[len++] = c;
+		while ((c = t[len++]) == 1);
 	} else {
 		fprintf(stderr, "unknown instruction");
 		exit(1);
 	}
 	return (Term){
-		       .t   = buf,
+		       .t   = t,
 		       .len = len
 	};
+}
+
+static Term
+get_termf(FILE *f, char *buf)
+{
+	int  len;
+
+	len = 0;
+	while ((buf[len++] = read_bit(f)) != -1);
+	return get_termt(buf);
 }
 
 static Closure
@@ -127,6 +132,7 @@ run_main(char *file)
 		exit(1);
 	}
 	t = get_termf(in, &c[0]);
+	t = get_termt(t.t);
 	for (int i = 0; i < t.len; ++i)
 		printf("%d\n", t.t[i]);
 	fclose(in);

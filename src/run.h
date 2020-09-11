@@ -18,8 +18,8 @@ typedef struct env {
 	Closure *c;
 } Environment;
 
+static Term get_termt(char *);
 static Term get_termf(FILE *, char *);
-static Term get_termt(Term);
 
 static Term mkterm(char *);
 static Closure mkclosure(Term, Environment *);
