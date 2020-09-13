@@ -1,18 +1,41 @@
 #include "common.h"
 
-static int bit_pos = -1;
-static int current_byte;
+static int rbpos = -1;
+static int current_rb;
+
+static int current_wb = 0;
+static int wbpos = 7;
 
 char
 read_bit(FILE *in)
 {
-	if (bit_pos >= 0) {
-		return (current_byte >> (bit_pos--)) & 1;
+	if (rbpos >= 0) {
+		return (current_rb >> (rbpos--)) & 1;
 	} else {
-		bit_pos = 7;
-		current_byte = getc(in);
-		if (current_byte == EOF)
+		rbpos = 7;
+		current_rb = getc(in);
+		if (current_rb == EOF)
 			return -1;
 		return read_bit(in);
 	}
+}
+
+void
+write_bit(char bit, FILE *out)
+{
+	if (wbpos > 0) 
+		current_wb |= (bit & 1) << (wbpos--);
+	else {
+		(void)fputc(current_wb, out);
+		wbpos = 7;
+		write_bit(bit, out);
+	}
+}
+
+void
+fclose_bit(FILE *file)
+{
+	if (wbpos)
+		(void)fputc(current_wb, file);
+	(void)fclose(file);
 }

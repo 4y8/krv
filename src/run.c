@@ -104,8 +104,10 @@ static void
 lam(Term t, Environment *e)
 {
 	if (stack.top == 0){
+		FILE *out = fopen("out", "w");
 		for (int i = -2; i < t.len; ++i)
-			printf("%d\n", t.t[t.pos + i]);
+			write_bit(t.t[t.pos + i], out);
+		fclose_bit(out);
 		return;
 	}
 	push(pop(&stack), e);

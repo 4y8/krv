@@ -2,6 +2,7 @@
 #define __COMMON_H__
 
 #include <stdio.h>
+#include <string.h>
 #include "run.h"
 #include "dis.h"
 
