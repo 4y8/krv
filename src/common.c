@@ -23,7 +23,7 @@ read_bit(FILE *in)
 void
 write_bit(char bit, FILE *out)
 {
-	if (wbpos > 0) 
+	if (wbpos > 0)
 		current_wb |= (bit & 1) << (wbpos--);
 	else {
 		(void)fputc(current_wb, out);

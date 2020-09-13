@@ -12,8 +12,9 @@ int
 main(int argc, char **argv)
 {
 	int i;
-	
+
 	for (i = 0; i < (sizeof(commands) / sizeof(struct command)); ++i)
-		if (!strcmp(commands[i].name, argv[1])) break; 
+		if (!strcmp(commands[i].name, argv[1]))
+			break;
 	commands[i].fun(argv[2]);
 }
