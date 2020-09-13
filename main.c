@@ -5,7 +5,8 @@ static struct command {
 	void (*fun)(char *);
 } commands[] = {
 	{"dis", dis_main},
-	{"run", run_main}
+	{"run", run_main},
+	{"as", as_main},
 };
 
 int
@@ -16,5 +17,9 @@ main(int argc, char **argv)
 	for (i = 0; i < (sizeof(commands) / sizeof(struct command)); ++i)
 		if (!strcmp(commands[i].name, argv[1]))
 			break;
+	if (i == (sizeof(commands) / sizeof(struct command))) {
+		printf("usage: krv [dis|run|as] FILE\n");
+		exit(1);
+	}
 	commands[i].fun(argv[2]);
 }

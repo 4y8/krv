@@ -1,5 +1,6 @@
-#include "dis.h"
 #include "common.h"
+
+static int print_expr(FILE *);
 
 static int
 print_expr(FILE *in)

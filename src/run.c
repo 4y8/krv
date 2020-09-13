@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-
-#include "run.h"
 #include "common.h"
 
 #define MAX_STACK_SIZE    1000
@@ -12,6 +8,37 @@
  * 01 x y:      (x y)
  * 1*(n + 1) 0: De Bruijn index n
  */
+
+typedef struct {
+	char *t;
+	int   len;
+	int pos;
+} Term;
+
+typedef struct clo {
+	Term        t;
+	struct env *e;
+} Closure;
+
+typedef struct env {
+	int      top;
+	Closure *c;
+} Environment;
+
+static Term get_termt(char *);
+static Term get_termf(FILE *, char *);
+
+static Term mkterm(char *);
+static Closure mkclosure(Term, Environment *);
+static Environment mkenv(void);
+
+static void push(Closure, Environment *);
+static Closure pop(Environment *);
+
+static void eval(Term, Environment *);
+static void app(Term, Term, Environment *);
+static void lam(Term, Environment *);
+static void deb(int, Environment *);
 
 Closure stack_clo[MAX_STACK_SIZE];
 Closure env_clo[MAX_STACK_SIZE];
