@@ -20,7 +20,7 @@ get_expr(FILE *in, FILE *out)
 		for (; i >= 0; --i)
 			write_bit(1, out);
 		write_bit(0, out);
-	} else if (c == 0xCE) {
+	} else if (c == 0xCE) { /* Check for unicode lambda. */
 		c = fgetc(in);
 		if (c == 0xBB) {
 			write_bit(0, out);
