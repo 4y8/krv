@@ -6,5 +6,7 @@
 #include "dis.h"
 
 char read_bit(FILE *);
+void write_bit(char, FILE *);
+void fclose_bit(FILE *);
 
 #endif /* common.h */

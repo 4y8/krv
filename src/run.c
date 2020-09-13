@@ -8,9 +8,9 @@
 
 /*
  * Instructions (by John Tromp):
- * 00 x:   lambda x
- * 01 x y: (x y)
- * 1*(n + 1) 0 : De Bruijn index n
+ * 00 x:        lambda x
+ * 01 x y:      (x y)
+ * 1*(n + 1) 0: De Bruijn index n
  */
 
 Closure stack_clo[MAX_STACK_SIZE];
@@ -103,6 +103,11 @@ app(Term l, Term r, Environment *e)
 static void
 lam(Term t, Environment *e)
 {
+	if (stack.top == 0){
+		for (int i = -2; i < t.len; ++i)
+			printf("%d\n", t.t[t.pos + i]);
+		return;
+	}
 	push(pop(&stack), e);
 	eval(t, e);
 }
@@ -122,8 +127,9 @@ eval(Term t, Environment *e)
 {
 	if (t.t[t.pos] == 0) {
 		if (t.t[t.pos + 1] == 0) {
-			t.pos += 2;
-			lam(t, e);
+			Term body;
+			body = get_termt(t.t + t.pos + 2);
+			lam(body, e);
 		}
 		else {
 			Term l, r;
@@ -132,10 +138,9 @@ eval(Term t, Environment *e)
 			app(l, r, e);
 		}
 	} else {
-		int n;
-		n = 0;
-		while (t.t[t.pos + (n++)]);
-		deb(n, e);
+		int n = 0;
+		while (t.t[t.pos + (++n)] == 1);
+		deb(n - 1, e);
 	}
 }
 
@@ -148,12 +153,10 @@ run_main(char *file)
 
 	in = fopen(file, "rb");
 	if (!in) {
-		printf("error: can't open file %s", file);
+		fprintf(stderr, "error: can't open file %s", file);
 		exit(1);
 	}
 	t = get_termf(in, &c[0]);
-	for (int i = 0; i < t.len; ++i)
-		printf("%d\n", t.t[i]);
 	eval(t, &env);
 	fclose(in);
 }
