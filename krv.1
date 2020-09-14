@@ -1,0 +1,22 @@
+.TH KRV 1 krv\-0.1
+.SH NAME
+krv \- simple Krivine machine
+.SH SYNOPSIS
+.B krv
+[dis|as|run]
+.IR file
+.SH DESCRIPTION
+krv is a simple Krivine machine for Binary Lambda Calculus.
+.SH OPTIONS
+.TP
+.BI run "file"
+run the
+.BI "file"
+in the following format:
+.TS
+allbox;
+c c.
+00x	\\x
+01xy	(x y)
+1*n0	n \- 1
+.TE

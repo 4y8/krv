@@ -9,4 +9,6 @@ krv: main.c src/as.c src/dis.c src/run.c src/common.c
 install: krv
 	install -Dm 755 krv $(PREFIX)/krv
 
-.PHONY: install
+uninstall: 
+
+.PHONY: install uninstall all

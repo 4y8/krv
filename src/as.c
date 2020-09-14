@@ -35,6 +35,8 @@ get_expr(FILE *in, FILE *out)
 		write_bit(0, out);
 		write_bit(1, out);
 		get_expr(in, out);
+		while ((c = fgetc(in)) == ' ');
+		ungetc(c, in);
 		get_expr(in, out);
 		if (fgetc(in) == ')')
 			ungetc(')', in);
