@@ -16,7 +16,6 @@ get_expr(FILE *in, FILE *out)
 			i += c - '0';
 		}
 		ungetc(c, in);
-		printf("%d\n", i);
 		for (; i >= 0; --i)
 			write_bit(1, out);
 		write_bit(0, out);

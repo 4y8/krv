@@ -23,11 +23,12 @@ read_bit(FILE *in)
 void
 write_bit(char bit, FILE *out)
 {
-	if (wbpos > 0)
+	if (wbpos >= 0)
 		current_wb |= (bit & 1) << (wbpos--);
 	else {
-		(void)fputc(current_wb, out);
+		(void)putc(current_wb, out);
 		wbpos = 7;
+		current_wb = 0;
 		write_bit(bit, out);
 	}
 }
@@ -35,7 +36,7 @@ write_bit(char bit, FILE *out)
 void
 fclose_bit(FILE *file)
 {
-	if (wbpos)
-		(void)fputc(current_wb, file);
+	if (wbpos >= 0)
+		(void)putc(current_wb, file);
 	(void)fclose(file);
 }
