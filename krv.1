@@ -18,5 +18,25 @@ allbox;
 c c.
 00x	\\x
 01xy	(x y)
-1*n0	n \- 1
+1*n 0	n \- 1
 .TE
+.TP
+.BI dis " file"
+dissamble the
+.BI "file"
+in the same format as run and prints to stdout the corresponding in readable
+format.
+.TP
+.BI as " file"
+assemble the
+.BI "file"
+to binary lambda calculus to the format specified earlier. The input file has to
+be in the following format:
+.TS
+allbox;
+c c.
+\\x	abstraction
+(x y)	application
+n	De Bruijn index
+.TE
+The \\ can be replaced by a unicode lambda and spaces don't count.

@@ -12,5 +12,7 @@ install: krv
 	install -Dm 644 krv.1 $(MANPREFIX)/man1/krv.1
 
 uninstall: 
+	rm $(PREFIX)/bin/krv
+	rm $(MANPREFIX)/man1/krv.1
 
 .PHONY: install uninstall all
